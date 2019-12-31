@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # OS 	Ubuntu 16.04
-# Shell Zsh
 
 docker(){ # CE版本
 	sudo apt-get update

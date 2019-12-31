@@ -1,20 +1,41 @@
 #!/bin/bash
 
 # ubuntu 替换 ali 源
+# 请在 root 权限下执行
+
+bk="/etc/apt/source.list.bk"
+
+if [ $1 = "reset" ];
+then
+	if [ ! -f "$bk" ];
+	then
+		echo "No backup file."
+	else
+		mv $bk /etc/apt/sources.list
+	fi
+	exit 0
+fi
+
+line=`lsb_release -a | grep Codename`
+c=""
+for l in $line
+do
+	c=$l
+done
 
 sudo cp /etc/apt/sources.list /etc/apt/source.list.bk
 
+
 echo "
-deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
-deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
-deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse　　
-" > /etc/apt/sources.list
+deb http://mirrors.aliyun.com/ubuntu/ $c main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ $c-security main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ $c-updates main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ $c-proposed main restricted universe multiverse
+deb http://mirrors.aliyun.com/ubuntu/ $c-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ $c main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ $c-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ $c-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ $c-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ $c-backports main restricted universe multiverse" > /etc/apt/sources.list
 
 echo "Source list replace done."
