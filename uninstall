@@ -1,0 +1,6 @@
+#!/bin/bash
+
+for item in `rpm -qa |grep -i ${1}`;
+do
+  yum remove $item -y
+done
